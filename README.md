@@ -1,0 +1,2 @@
+# AppInfoManager
+app项目
