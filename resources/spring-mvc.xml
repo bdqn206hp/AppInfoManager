@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <context:component-scan base-package="priv.simon.springboot.controller"/>
+    <mvc:annotation-driven/>
+    <mvc:resources mapping="/home/**" location="/home/"/>
+    <mvc:resources mapping="/AppInfoSystem/**" location="/AppInfoSystem/"/>
+    <mvc:resources mapping="/js/**" location="/js/"/>
+    <mvc:resources mapping="/layui/**" location="/layui/"/>
+    <mvc:resources mapping="/style/**" location="/style/"/>
+    <!--<bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/"/>
+        <property name="suffix" value=".html"/>
+    </bean>-->
+
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/dev/app/**"/>
+            <mvc:mapping path="/back/app/**"/>
+            <bean class="priv.simon.springboot.interceptor.UserInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+    <bean id="templateResolver"
+          class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
+        <property name="prefix" value="/" />
+        <property name="suffix" value=".html" />
+        <property name="templateMode" value="HTML" />
+        <property name="cacheable" value="false" />
+        <property name="characterEncoding" value="UTF-8"/><!--不加会乱码-->
+    </bean>
+
+    <bean id="templateEngine"
+          class="org.thymeleaf.spring4.SpringTemplateEngine">
+        <property name="templateResolver" ref="templateResolver" />
+    </bean>
+
+    <bean class="org.thymeleaf.spring4.view.ThymeleafViewResolver">
+        <property name="templateEngine" ref="templateEngine" />
+        <!--解决中文乱码-->
+        <property name="characterEncoding" value="UTF-8"/>
+    </bean>
+
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
+</beans>

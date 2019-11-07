@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="priv.simon.springboot.mapper.BackendUserMapper">
+    <resultMap id="User" type="BackendUser">
+        <id property="id" column="id"/>
+        <result property="userName" column="username"/>
+        <result property="userType" column="userType"/>
+        <result property="userCode" column="userCode"/>
+        <association property="dataDictionary" javaType="DataDictionary">
+            <result property="valueName" column="valueName"/>
+        </association>
+    </resultMap>
+    <!--后台登陆-->
+    <select id="selUserLogin" resultMap="User" parameterType="BackendUser">
+        SELECT u.*,valueName FROM `backend_user` u ,data_dictionary d
+        WHERE userCode=#{userCode}  AND userPassword =#{userPassword} and u.userType=d.id
+    </select>
+</mapper>
